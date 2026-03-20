@@ -66,11 +66,11 @@ export async function authMiddleware(
       return;
     }
 
-    // Look up the store associated with this user's phone number
+    // Look up the store associated with this auth user
     const { data: store, error: storeError } = await authClient
       .from('stores')
       .select('id')
-      .eq('phone', user.phone || '')
+      .eq('user_id', user.id)
       .single();
 
     if (storeError && storeError.code !== 'PGRST116') {

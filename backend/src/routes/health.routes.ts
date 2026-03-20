@@ -17,13 +17,15 @@ router.get('/health', async (_req: Request, res: Response) => {
       timestamp: new Date().toISOString(),
       db: error ? 'down' : 'up',
       version: '1.0.0',
+      _debug: error ? { message: error.message, code: error.code, details: error.details } : undefined,
     });
-  } catch {
+  } catch (err) {
     res.json({
       status: 'degraded',
       timestamp: new Date().toISOString(),
       db: 'down',
       version: '1.0.0',
+      _debug: { message: String(err) },
     });
   }
 });
