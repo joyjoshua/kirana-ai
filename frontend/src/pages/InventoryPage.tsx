@@ -155,26 +155,24 @@ function ViewRow({
       </span>
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-1">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '2px' }}>
         {isDeleteTarget ? (
           <>
             <button
               type="button"
               onClick={onConfirmDelete}
               aria-label="Confirm delete"
-              className="w-8 h-8 flex items-center justify-center rounded-full"
-              style={{ backgroundColor: 'rgba(229,57,53,0.12)', color: '#E53935' }}
+              style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', backgroundColor: 'rgba(229,57,53,0.12)', color: '#E53935' }}
             >
-              <Check size={15} strokeWidth={2.5} />
+              <Check size={14} strokeWidth={2.5} />
             </button>
             <button
               type="button"
               onClick={onCancelDelete}
               aria-label="Cancel delete"
-              className="w-8 h-8 flex items-center justify-center rounded-full text-[#8E8E93]"
-              style={{ backgroundColor: 'rgba(120,120,128,0.10)' }}
+              style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', backgroundColor: 'rgba(120,120,128,0.10)', color: '#8E8E93' }}
             >
-              <X size={15} strokeWidth={2.5} />
+              <X size={14} strokeWidth={2.5} />
             </button>
           </>
         ) : (
@@ -183,7 +181,7 @@ function ViewRow({
               type="button"
               onClick={onEdit}
               aria-label="Edit item"
-              className="w-8 h-8 flex items-center justify-center rounded-full text-[#002970] active:bg-[rgba(0,41,112,0.08)] transition-colors"
+              style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#002970' }}
             >
               <Pencil size={14} strokeWidth={2} />
             </button>
@@ -191,7 +189,7 @@ function ViewRow({
               type="button"
               onClick={onDelete}
               aria-label="Delete item"
-              className="w-8 h-8 flex items-center justify-center rounded-full text-[#8E8E93] active:bg-[rgba(229,57,53,0.10)] active:text-[#E53935] transition-colors"
+              style={{ width: 30, height: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%', border: 'none', cursor: 'pointer', backgroundColor: 'transparent', color: '#8E8E93' }}
             >
               <Trash2 size={14} strokeWidth={2} />
             </button>

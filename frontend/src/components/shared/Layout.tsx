@@ -68,8 +68,8 @@ export function Layout({ children, title = 'KiranaAI', showBack = false, rightAc
         style={{ paddingBottom: hideTabBar ? '1.25rem' : '88px' }}
       >
         <div
-          className="w-full px-4 py-5 flex flex-col justify-center"
-          style={{ maxWidth: CONTENT_MAX_WIDTH, minHeight: '100%' }}
+          className="w-full flex flex-col justify-center"
+          style={{ maxWidth: CONTENT_MAX_WIDTH, minHeight: '100%', padding: '28px 16px 20px' }}
         >
           {children}
         </div>

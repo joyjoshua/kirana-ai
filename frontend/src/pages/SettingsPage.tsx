@@ -123,11 +123,11 @@ function EditableField({
   if (editing) {
     return (
       <div style={{ padding: '12px 20px', backgroundColor: 'rgba(0,41,112,0.03)' }}>
-        <div className="flex items-center gap-2 mb-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 10 }}>
           <span style={{ color: '#002970', flexShrink: 0 }}>{icon}</span>
           <span style={{ fontSize: 11, fontWeight: 600, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.4px' }}>{label}</span>
         </div>
-        <div className="flex items-center gap-2">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <input
             type={inputType}
             inputMode={inputMode}
