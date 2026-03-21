@@ -34,7 +34,7 @@ export async function commitSaleAndUpdateStock(
 
   const { data, error } = await supabase.rpc('commit_sale', {
     p_store_id: storeId,
-    p_items: JSON.stringify(items),
+    p_items: items,
   });
 
   if (error) {

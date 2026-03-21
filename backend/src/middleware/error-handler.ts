@@ -58,23 +58,39 @@ export function errorHandler(
     return;
   }
 
-  // LLM service errors (LM Studio down or Anthropic API issues)
+  // LLM service errors — OpenAI SDK APIError, LM Studio down, or provider failures
+  const asAny = err as { status?: number; name?: string };
   if (
+    err.name === 'APIError' ||
     err.name === 'AnthropicError' ||
+    (asAny.status !== undefined && asAny.status >= 500) ||
     err.message?.includes('ECONNREFUSED') ||
     err.message?.includes('fetch failed') ||
-    err.message?.includes('Connection error')
+    err.message?.includes('Connection error') ||
+    err.message?.includes('Provider error')
   ) {
     res.status(502).json({
       error: 'AI service temporarily unavailable',
       code: 'AI_UNAVAILABLE',
+      ...(process.env.NODE_ENV !== 'production' && { details: err.message }),
     });
     return;
   }
 
-  // Fallback: generic 500
+  // Sarvam STT errors — surface the actual API response in dev
+  if (err.message?.startsWith('Sarvam STT failed:')) {
+    res.status(502).json({
+      error: 'Speech-to-text service error',
+      code: 'STT_ERROR',
+      ...(process.env.NODE_ENV !== 'production' && { details: err.message }),
+    });
+    return;
+  }
+
+  // Fallback: generic 500 (expose message in dev for debugging)
   res.status(500).json({
     error: 'Internal server error',
     code: 'INTERNAL_ERROR',
+    ...(process.env.NODE_ENV !== 'production' && { details: err.message }),
   });
 }

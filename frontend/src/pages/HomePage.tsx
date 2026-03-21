@@ -10,7 +10,8 @@ import { WhatsAppBubble } from '@/components/reorder/WhatsAppBubble';
 import { StockAlert } from '@/components/inventory/StockAlert';
 import { Card } from '@/components/ui/Card';
 import { useVoiceState } from '@/hooks/useVoiceState';
-import { useVapi } from '@/hooks/useVapi';
+import { useAudioRecorder } from '@/hooks/useAudioRecorder';
+import { transcribeAudio } from '@/api/stt';
 import { useSaleStore } from '@/stores/saleStore';
 import { useAuthStore } from '@/stores/authStore';
 import { parseSale } from '@/api/sales';
@@ -36,23 +37,7 @@ export default function HomePage() {
   const transcriptRef = useRef(transcript);
   transcriptRef.current = transcript;
 
-  // --- VAPI Integration ---
-  const { startCall, stopCall } = useVapi({
-    onTranscript: useCallback((text: string, isFinal: boolean) => {
-      send({ type: 'TRANSCRIPT_RECEIVED', transcript: text });
-      if (isFinal) {
-        // Final transcript triggers parse
-      }
-    }, [send]),
-
-    onCallEnd: useCallback(() => {
-      send({ type: 'SPEECH_ENDED' });
-    }, [send]),
-
-    onError: useCallback((_err: Error) => {
-      send({ type: 'PARSE_ERROR', error: 'Voice service error. Please try again.' });
-    }, [send]),
-  });
+  const audioRecorder = useAudioRecorder();
 
   // --- Parse sale when speech ends ---
   useEffect(() => {
@@ -115,18 +100,23 @@ export default function HomePage() {
   const handleMicPress = useCallback(async () => {
     if (state === 'idle' || state === 'error') {
       try {
-        await startCall();
-        send({ type: 'MIC_PRESSED' });
-      } catch (_err: unknown) {
-        // VAPI not configured — simulate with manual transcript for demo
-        send({ type: 'MIC_PRESSED' });
-        showToast('Voice not configured — type your sale below', 'info');
+        await audioRecorder.start();
+        send({ type: 'MIC_PRESSED' }); // → listening
+      } catch {
+        send({ type: 'PARSE_ERROR', error: 'Mic access denied. Please allow microphone access.' });
       }
     } else if (state === 'listening') {
-      stopCall();
-      send({ type: 'MIC_PRESSED' });
+      // Stop recording — state stays 'listening' briefly while Sarvam transcribes
+      const blob = await audioRecorder.stop();
+      try {
+        const { transcript: text } = await transcribeAudio(blob);
+        send({ type: 'TRANSCRIPT_RECEIVED', transcript: text });
+        send({ type: 'SPEECH_ENDED' }); // → processing → triggers parseSale effect
+      } catch {
+        send({ type: 'PARSE_ERROR', error: 'Kelisalilla, madde heli. (Could not transcribe audio)' });
+      }
     }
-  }, [state, startCall, stopCall, send]);
+  }, [state, audioRecorder, send]);
 
   const handleReset = useCallback(() => {
     reset();
@@ -135,7 +125,7 @@ export default function HomePage() {
   }, [reset, send, setPaymentStatus]);
 
   const showVoiceUI = state === 'idle' || state === 'listening' || state === 'error';
-  const showConfirmation = state === 'confirmation' || state === 'processing';
+  const showConfirmation = state === 'confirmation' || state === 'committing';
   const showQr = state === 'committed' && saleId;
 
   return (
@@ -169,7 +159,7 @@ export default function HomePage() {
             <SaleConfirmationCard
               key="confirmation"
               items={items}
-              loading={state === 'processing'}
+              loading={state === 'committing'}
               onConfirm={handleConfirm}
               onEdit={(index: number, item: SaleItem) => updateItem(index, item)}
               onRemove={(index: number) => removeItem(index)}

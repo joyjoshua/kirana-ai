@@ -12,6 +12,7 @@ import reorderRouter from './routes/reorder.routes';
 import qrRouter from './routes/qr.routes';
 import vendorsRouter from './routes/vendors.routes';
 import authRouter from './routes/auth.routes';
+import sttRouter from './routes/stt.routes';
 import { logLlmProvider } from './services/llm.service';
 
 const app = express();
@@ -44,6 +45,7 @@ app.use('/api', authRouter);
 
 // ─── Protected Routes (Supabase JWT required) ───────────────────────
 
+app.use('/api', authMiddleware, sttRouter);
 app.use('/api', authMiddleware, salesRouter);
 app.use('/api', authMiddleware, inventoryRouter);
 app.use('/api', authMiddleware, reorderRouter);

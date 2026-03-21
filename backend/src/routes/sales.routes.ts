@@ -51,9 +51,9 @@ router.post(
       const result = await commitSaleAndUpdateStock(store_id, items);
 
       res.status(201).json({
-        sale_id: result.saleId,
-        total_amount: result.totalAmount,
-        low_stock_items: result.lowStockItems,
+        saleId: result.saleId,
+        totalAmount: result.totalAmount,
+        lowStockItems: result.lowStockItems,
       });
     } catch (err) {
       next(err);

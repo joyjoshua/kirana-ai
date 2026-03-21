@@ -1,4 +1,4 @@
-import { llm, DRAFT_MODEL } from './llm.service';
+import { chatComplete, DRAFT_MODEL } from './llm.service';
 import { supabase } from '../config/supabase';
 import { logger } from '../utils/logger';
 import { NotFoundError } from '../middleware/error-handler';
@@ -65,7 +65,7 @@ export async function generateReorderDraft(
   );
 
   // 4. Generate WhatsApp message via LLM
-  const response = await llm.chat.completions.create({
+  const message = (await chatComplete({
     model: DRAFT_MODEL,
     max_tokens: 256,
     temperature: 0.7, // Higher for natural, human-sounding language
@@ -88,9 +88,7 @@ Qty needed: ${item.reorder_qty} ${item.unit}
 Vendor: ${vendor.name}`,
       },
     ],
-  });
-
-  const message = response.choices[0]?.message?.content?.trim() || '';
+  })).trim();
 
   if (!message) {
     logger.warn({ skuId }, 'LLM returned empty reorder draft');

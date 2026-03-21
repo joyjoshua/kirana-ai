@@ -4,8 +4,9 @@ import type { SaleItem } from '../types/sale';
 export type VoiceState =
   | 'idle'
   | 'listening'
-  | 'processing'
+  | 'processing'   // parsing transcript via LLM
   | 'confirmation'
+  | 'committing'   // committing sale to DB (distinct from parsing)
   | 'error'
   | 'committed';
 
@@ -54,7 +55,7 @@ function reducer(current: VoiceStateShape, event: VoiceEvent): VoiceStateShape {
       return { ...current, state: 'error', errorMessage: event.error };
 
     case 'USER_CONFIRMED':
-      return { ...current, state: 'processing' };
+      return { ...current, state: 'committing' };
 
     case 'USER_CORRECTED':
       return { ...current, state: 'listening', transcript: '' };

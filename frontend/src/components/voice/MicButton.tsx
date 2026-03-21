@@ -43,6 +43,13 @@ const stateConfig: Record<VoiceState, {
     showPulse: false,
     showSpinner: false,
   },
+  committing: {
+    bg: '#003A9E',
+    icon: <Loader2 size={28} color="white" className="animate-spin-arc" />,
+    label: 'Saving sale…',
+    showPulse: false,
+    showSpinner: true,
+  },
   committed: {
     bg: '#00A86B',
     icon: <Check size={28} color="white" strokeWidth={2.5} />,
@@ -61,7 +68,7 @@ const stateConfig: Record<VoiceState, {
 
 export function MicButton({ state, onPress, disabled = false }: MicButtonProps) {
   const config = stateConfig[state];
-  const isDisabled = disabled || state === 'processing' || state === 'committed';
+  const isDisabled = disabled || state === 'processing' || state === 'committing' || state === 'committed';
 
   return (
     <div className="relative flex items-center justify-center" style={{ width: 72, height: 72 }}>
