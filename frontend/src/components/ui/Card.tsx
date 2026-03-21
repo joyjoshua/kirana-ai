@@ -14,8 +14,9 @@ interface CardHeaderProps {
 export function Card({ children, className, elevated = false }: CardProps) {
   return (
     <div
-      className={cn('rounded-[20px] bg-white p-5', className)}
+      className={cn('rounded-[20px] bg-white', className)}
       style={{
+        padding: '24px',
         boxShadow: elevated
           ? '0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.10)'
           : '0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06)',
@@ -39,7 +40,7 @@ export function CardHeader({ children, className }: CardHeaderProps) {
 
 export function SectionHeader({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <p className={cn('text-[11px] font-semibold text-[#8E8E93] uppercase tracking-[0.07px] mb-3', className)}>
+    <p className={cn('text-[12px] font-semibold text-[#8E8E93] uppercase tracking-[0.4px] mb-3', className)}>
       {children}
     </p>
   );

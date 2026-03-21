@@ -9,6 +9,7 @@ import {
   getInventory,
   createInventoryItem,
   updateInventoryItem,
+  deleteInventoryItem,
 } from '../services/inventory.service';
 
 const router = Router();
@@ -66,6 +67,22 @@ router.patch(
     try {
       const item = await updateInventoryItem(req.params.skuId as string, req.storeId!, req.body);
       res.json(item);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+/**
+ * DELETE /api/inventory/:skuId
+ * Deletes an inventory item.
+ */
+router.delete(
+  '/inventory/:skuId',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await deleteInventoryItem(req.params.skuId as string, req.storeId!);
+      res.status(204).send();
     } catch (err) {
       next(err);
     }

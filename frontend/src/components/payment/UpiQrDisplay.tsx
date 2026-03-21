@@ -45,13 +45,13 @@ export function UpiQrDisplay({ amount, merchantVpa, merchantName, saleId, onPaym
       <Card>
         {/* Cyan header */}
         <div
-          className="-mx-5 -mt-5 mb-4 flex items-center justify-center rounded-t-[20px]"
-          style={{ backgroundColor: '#00BAF2', height: 48 }}
+          className="flex items-center justify-center rounded-t-[20px]"
+          style={{ backgroundColor: '#00BAF2', height: 52, margin: '-24px -24px 20px -24px' }}
         >
           <span className="text-[17px] font-semibold text-white tracking-[-0.43px]">Scan to Pay</span>
         </div>
 
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex flex-col items-center gap-4">
           <AnimatePresence mode="wait">
             {paid ? (
               <motion.div
@@ -61,8 +61,8 @@ export function UpiQrDisplay({ amount, merchantVpa, merchantName, saleId, onPaym
                 transition={{ duration: 0.4, ease: [0.175, 0.885, 0.32, 1.275] }}
                 className="flex flex-col items-center gap-3 py-8"
               >
-                <CheckCircle size={64} color="#00A86B" strokeWidth={1.5} />
-                <p className="text-[22px] font-bold text-[#00A86B] tracking-[-0.26px]">Payment Received!</p>
+                <CheckCircle size={64} color="#00C48C" strokeWidth={1.5} />
+                <p className="text-[22px] font-bold text-[#00C48C] tracking-[-0.26px]">Payment Received!</p>
                 <p className="text-[17px] text-[#8E8E93]">{formatCurrency(amount)}</p>
               </motion.div>
             ) : (
@@ -78,12 +78,12 @@ export function UpiQrDisplay({ amount, merchantVpa, merchantName, saleId, onPaym
                   <span className="animate-pulse">…</span>
                 </div>
                 <Button
-                  variant="secondary"
+                  variant="upi"
                   className="w-full mt-1"
                   loading={loading}
                   onClick={handleMarkAsPaid}
                 >
-                  Mark as Paid
+                  Mark as Paid ✓
                 </Button>
               </motion.div>
             )}

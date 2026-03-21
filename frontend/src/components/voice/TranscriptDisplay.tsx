@@ -12,15 +12,13 @@ const confidenceColor = {
 export function TranscriptDisplay({ transcript, confidence }: TranscriptDisplayProps) {
   return (
     <div
-      className="rounded-[12px] px-4 py-3 relative overflow-hidden"
+      className="w-full rounded-[16px] px-6 py-5 relative overflow-hidden"
       style={{ backgroundColor: 'rgba(120, 120, 128, 0.08)' }}
       aria-live="polite"
       aria-label="Voice transcript"
     >
-      <p className="text-[17px] text-[#1C1C1E] tracking-[-0.43px] min-h-[26px]">
-        {transcript || (
-          <span className="text-[#8E8E93]">Say your sale… (e.g., "Atta 2 kilo, Maggi teen packet")</span>
-        )}
+      <p className="text-[20px] text-[#1C1C1E] tracking-[-0.4px] leading-snug min-h-[30px]">
+        {transcript}
       </p>
       {confidence && (
         <div

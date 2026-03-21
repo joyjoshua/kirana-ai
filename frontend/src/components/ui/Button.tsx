@@ -13,16 +13,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       'inline-flex items-center justify-center font-semibold transition-all duration-[80ms] active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 disabled:pointer-events-none disabled:opacity-50 select-none';
 
     const sizes = {
-      md: 'h-[50px] rounded-[14px] px-6 text-[17px] tracking-[-0.43px]',
-      sm: 'h-9 rounded-[10px] px-4 text-[15px] tracking-[-0.23px]',
+      md: 'h-[50px] rounded-[14px] px-6 text-[17px] tracking-[-0.43px] gap-2',
+      sm: 'h-10 rounded-[10px] px-4 text-[15px] tracking-[-0.23px] gap-1.5',
     };
 
     const variants = {
-      primary: 'bg-[#002970] text-white active:bg-[#001d52] focus-visible:outline-[#002970]',
-      secondary: 'bg-[#EEF3FA] text-[#002970] active:bg-[#dde9f7] focus-visible:outline-[#002970]',
-      ghost: 'bg-transparent text-[#002970] active:bg-[#EEF3FA] focus-visible:outline-[#002970]',
+      primary:     'bg-[#002970] text-white active:bg-[#001d52] focus-visible:outline-[#002970]',
+      secondary:   'bg-[#E6FAF5] text-[#00A87A] active:bg-[#ccf5ea] focus-visible:outline-[#00C48C]',
+      ghost:       'bg-transparent text-[#002970] active:bg-[#EEF3FA] focus-visible:outline-[#002970]',
       destructive: 'bg-[#FDECEC] text-[#E53935] active:bg-[#fbd9d9] focus-visible:outline-[#E53935]',
-      upi: 'bg-[#00BAF2] text-white active:bg-[#009fd4] focus-visible:outline-[#00BAF2]',
+      upi:         'bg-[#00BAF2] text-white active:bg-[#009fd4] focus-visible:outline-[#00BAF2]',
     };
 
     return (

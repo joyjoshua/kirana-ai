@@ -137,17 +137,66 @@ export default function HomePage() {
             <motion.div
               key="voice-ui"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{
+                opacity: 1,
+                borderColor: [
+                  'rgba(0,41,112,0.07)',
+                  'rgba(0,41,112,0.18)',
+                  'rgba(0,41,112,0.07)',
+                ],
+                borderRadius: ['18px', '26px', '18px'],
+              }}
               exit={{ opacity: 0 }}
-              className="flex flex-col items-center gap-4 py-4"
+              transition={{
+                opacity: { duration: 0.3 },
+                borderColor: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+                borderRadius: { duration: 3, repeat: Infinity, ease: 'easeInOut' },
+              }}
+              className="w-full flex flex-col p-8"
+              style={{
+                minHeight: 'calc(100dvh - 240px)',
+                border: '1.5px solid rgba(0,41,112,0.07)',
+                backgroundColor: 'rgba(255,255,255,0.55)',
+              }}
             >
-              <TranscriptDisplay transcript={transcript} />
-              <Waveform active={state === 'listening'} />
+              {/* Centered area — waveform / transcript / error */}
+              <div className="flex-1 flex flex-col items-center justify-center gap-6">
+                {(state === 'listening' || transcript) && (
+                  <TranscriptDisplay transcript={transcript} />
+                )}
+                <Waveform active={state === 'listening'} />
+                {state === 'error' && (
+                  <Card>
+                    <p className="text-[15px] text-[#E53935] text-center">{errorMessage}</p>
+                  </Card>
+                )}
+              </div>
 
-              {state === 'error' && (
-                <Card>
-                  <p className="text-[15px] text-[#E53935] text-center">{errorMessage}</p>
-                </Card>
+              {/* Step instructions — pinned to bottom of container, idle only */}
+              {state === 'idle' && !transcript && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex flex-col gap-3 rounded-[14px]"
+                  style={{ padding: '20px 24px', backgroundColor: 'rgba(120,120,128,0.06)' }}
+                >
+                  {[
+                    { step: 1, text: 'Tap the mic button below' },
+                    { step: 2, text: 'Say your items — e.g., "ek kg Tata Salt, teen Maggi packet"' },
+                    { step: 3, text: 'Tap the stop button when done' },
+                  ].map(({ step, text }) => (
+                    <div key={step} className="flex items-start gap-3">
+                      <span
+                        className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-semibold text-[#8E8E93]"
+                        style={{ backgroundColor: 'rgba(120,120,128,0.10)', marginTop: 1 }}
+                      >
+                        {step}
+                      </span>
+                      <span className="text-[15px] text-[#8E8E93] leading-snug">{text}</span>
+                    </div>
+                  ))}
+                </motion.div>
               )}
             </motion.div>
           )}
@@ -240,8 +289,8 @@ export default function HomePage() {
         <div style={{ height: 100 }} />
       </PageContainer>
 
-      {/* Floating Mic Button */}
-      <div className="fixed bottom-[65px] left-0 right-0 flex justify-center z-40 max-w-[480px] mx-auto pointer-events-none">
+      {/* Floating Mic Button — centered in viewport above tab bar */}
+      <div className="fixed bottom-[65px] left-0 right-0 flex justify-center z-40 pointer-events-none">
         <div className="pointer-events-auto">
           <MicButton
             state={state}

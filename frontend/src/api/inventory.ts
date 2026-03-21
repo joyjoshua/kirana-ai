@@ -29,3 +29,20 @@ export async function createInventoryItem(payload: CreateItemPayload): Promise<I
   const { data } = await api.post<InventoryItem>('/api/inventory', payload);
   return data;
 }
+
+export interface UpdateItemPayload {
+  name?: string;
+  sale_price?: number;
+  stock_qty?: number;
+  unit?: string;
+  reorder_threshold?: number;
+}
+
+export async function updateInventoryItem(skuId: string, payload: UpdateItemPayload): Promise<InventoryItem> {
+  const { data } = await api.patch<InventoryItem>(`/api/inventory/${skuId}`, payload);
+  return data;
+}
+
+export async function deleteInventoryItem(skuId: string): Promise<void> {
+  await api.delete(`/api/inventory/${skuId}`);
+}

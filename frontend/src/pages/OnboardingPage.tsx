@@ -60,7 +60,7 @@ function StepDot({ num, status, label }: { num: number; status: 'active' | 'done
       <div
         className="w-8 h-8 rounded-full flex items-center justify-center"
         style={{
-          backgroundColor: status === 'done' ? '#00a86b' : status === 'active' ? '#002970' : 'transparent',
+          backgroundColor: status === 'done' ? '#00C48C' : status === 'active' ? '#002970' : 'transparent',
           border: status === 'future' ? '2px solid #E5E7EB' : 'none',
         }}
       >
@@ -77,7 +77,7 @@ function StepDot({ num, status, label }: { num: number; status: 'active' | 'done
       </div>
       <span
         className="text-[11px] font-semibold tracking-[0.07px]"
-        style={{ color: status === 'active' ? '#002970' : status === 'done' ? '#00a86b' : '#AEAEB2' }}
+        style={{ color: status === 'active' ? '#002970' : status === 'done' ? '#00C48C' : '#AEAEB2' }}
       >
         {label}
       </span>
@@ -213,7 +213,7 @@ export default function OnboardingPage() {
     return (
       <div
         className="min-h-dvh flex flex-col items-center justify-center px-6 gap-6"
-        style={{ background: 'linear-gradient(160deg, #EEF3FA 0%, #F2F4F8 55%, #E8EFFD 100%)' }}
+        style={{ background: 'linear-gradient(160deg, #EEF3FA 0%, #F2F2F7 55%, #E8EFFD 100%)' }}
       >
         <motion.div
           initial={{ scale: 0.7, opacity: 0 }}
@@ -223,7 +223,10 @@ export default function OnboardingPage() {
         >
           <div
             className="w-24 h-24 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: '#002970', boxShadow: '0 4px 24px rgba(0,41,112,0.22)' }}
+            style={{
+              background: 'linear-gradient(140deg, #002970 0%, #1a4fa8 100%)',
+              boxShadow: '0 6px 28px rgba(0,41,112,0.28)',
+            }}
           >
             <Check size={44} color="white" strokeWidth={2.5} />
           </div>
@@ -249,27 +252,38 @@ export default function OnboardingPage() {
   const progressPct = step === 'store' ? 33 : step === 'inventory' ? 66 : 100;
 
   return (
-    <div className="min-h-dvh flex flex-col" style={{ backgroundColor: '#F2F4F8' }}>
-      {/* Progress bar */}
-      <div className="h-1 w-full bg-[#E5E7EB]">
+    <div className="min-h-dvh flex flex-col" style={{ backgroundColor: '#F2F2F7' }}>
+      {/* Full-width progress bar */}
+      <div className="h-[3px] w-full" style={{ backgroundColor: 'rgba(0,41,112,0.12)' }}>
         <div
-          className="h-full bg-[#002970] transition-all duration-500"
-          style={{ width: `${progressPct}%` }}
+          className="h-full transition-all duration-500"
+          style={{ width: `${progressPct}%`, backgroundColor: '#002970' }}
         />
       </div>
 
-      {/* Nav */}
-      <header className="flex items-center justify-center px-6 py-4">
-        <span className="text-[17px] font-semibold text-[#1C1C1E] tracking-[-0.43px]">
-          {step === 'store' ? 'Set Up Store' : 'Add Inventory'}
-        </span>
+      {/* Nav — full width with centered content */}
+      <header
+        className="w-full flex justify-center"
+        style={{
+          backgroundColor: 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(60,60,67,0.10)',
+        }}
+      >
+        <div className="w-full flex items-center justify-center px-6 h-14" style={{ maxWidth: '520px' }}>
+          <span className="text-[17px] font-semibold text-[#1C1C1E] tracking-[-0.43px]">
+            {step === 'store' ? 'Set Up Store' : 'Add Inventory'}
+          </span>
+        </div>
       </header>
 
-      <div className="flex-1 px-5 pb-10 max-w-[520px] w-full mx-auto">
+      {/* Centered content column */}
+      <div className="flex-1 flex justify-center w-full">
+      <div className="flex-1 px-5 pb-10 w-full" style={{ maxWidth: '520px' }}>
         {/* Step indicator */}
         <div className="flex items-center justify-center gap-3 mb-8">
           <StepDot num={1} status={step === 'store' ? 'active' : 'done'} label="Store" />
-          <div className="flex-1 h-[2px] max-w-[60px] rounded-full" style={{ backgroundColor: step !== 'store' ? '#00a86b' : '#E5E7EB' }} />
+          <div className="flex-1 h-[2px] max-w-[60px] rounded-full" style={{ backgroundColor: step !== 'store' ? '#00C48C' : '#E5E7EB' }} />
           <StepDot num={2} status={step === 'inventory' ? 'active' : step === 'done' ? 'done' : 'future'} label="Inventory" />
           <div className="flex-1 h-[2px] max-w-[60px] rounded-full bg-[#E5E7EB]" />
           <StepDot num={3} status="future" label="Done" />
@@ -370,8 +384,8 @@ export default function OnboardingPage() {
                           min="0"
                           value={item.sale_price}
                           onChange={(e) => updateItem(index, 'sale_price', e.target.value)}
-                          className="w-full h-[54px] rounded-[14px] px-4 text-[17px] text-[#1C1C1E] placeholder-[#AEAEB2] tracking-[-0.43px] outline-none focus:ring-2 focus:ring-[#002970] focus:bg-white transition-all duration-[150ms]"
-                          style={{ backgroundColor: itemErrors[index]?.sale_price ? 'rgba(229,57,53,0.06)' : 'rgba(120,120,128,0.10)' }}
+                          className="w-full h-[54px] rounded-[14px] text-[17px] text-[#1C1C1E] placeholder-[#AEAEB2] tracking-[-0.43px] outline-none focus:ring-2 focus:ring-[#002970] focus:bg-white transition-all duration-[150ms]"
+                          style={{ backgroundColor: itemErrors[index]?.sale_price ? 'rgba(229,57,53,0.06)' : 'rgba(120,120,128,0.10)', paddingLeft: 20 }}
                         />
                         {itemErrors[index]?.sale_price && (
                           <p className="text-[13px] text-[#E53935] mt-1">{itemErrors[index].sale_price}</p>
@@ -390,7 +404,7 @@ export default function OnboardingPage() {
                           value={item.stock_qty}
                           onChange={(e) => updateItem(index, 'stock_qty', e.target.value)}
                           className="w-full h-[54px] rounded-[14px] px-4 text-[17px] text-[#1C1C1E] placeholder-[#AEAEB2] tracking-[-0.43px] outline-none focus:ring-2 focus:ring-[#002970] focus:bg-white transition-all duration-[150ms]"
-                          style={{ backgroundColor: itemErrors[index]?.stock_qty ? 'rgba(229,57,53,0.06)' : 'rgba(120,120,128,0.10)' }}
+                          style={{ backgroundColor: itemErrors[index]?.stock_qty ? 'rgba(229,57,53,0.06)' : 'rgba(120,120,128,0.10)', paddingLeft: 20 }}
                         />
                         {itemErrors[index]?.stock_qty && (
                           <p className="text-[13px] text-[#E53935] mt-1">{itemErrors[index].stock_qty}</p>
@@ -455,6 +469,7 @@ export default function OnboardingPage() {
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
       </div>
     </div>
   );

@@ -183,3 +183,24 @@ export async function updateInventoryItem(
   logger.info({ skuId: data.id, name: data.name }, 'Inventory item updated');
   return data;
 }
+
+/**
+ * Deletes an inventory item by ID.
+ */
+export async function deleteInventoryItem(skuId: string, storeId: string): Promise<void> {
+  const { error } = await supabase
+    .from('inventory')
+    .delete()
+    .eq('id', skuId)
+    .eq('store_id', storeId);
+
+  if (error) {
+    if (error.code === 'PGRST116') {
+      throw new NotFoundError('Inventory item', skuId);
+    }
+    logger.error({ error, skuId }, 'Failed to delete inventory item');
+    throw error;
+  }
+
+  logger.info({ skuId }, 'Inventory item deleted');
+}

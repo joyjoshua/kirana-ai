@@ -32,6 +32,13 @@ const createStoreSchema = z.object({
   preferred_language: z.string().default('hi'),
 });
 
+const updateStoreSchema = z.object({
+  owner_name: z.string().min(1).optional(),
+  store_name: z.string().min(1).optional(),
+  phone: z.string().min(10).optional(),
+  upi_vpa: z.string().min(1).optional(),
+});
+
 // ─── Rate limiter (10 attempts / 15 min per IP) ───────────────────────────────
 
 const loginAttempts = new Map<string, { count: number; resetAt: number }>();
@@ -245,6 +252,63 @@ router.post('/auth/store', async (req: Request, res: Response) => {
     logger.error({ err }, 'Create store unexpected error');
     res.status(500).json({ error: 'Server error', code: 'SERVER_ERROR' });
   }
+});
+
+/**
+ * GET /api/auth/store/details
+ * Returns full store details for the authenticated user.
+ */
+router.get('/auth/store/details', async (req: Request, res: Response) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Missing token', code: 'AUTH_MISSING' });
+    return;
+  }
+  const token = authHeader.replace('Bearer ', '');
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) {
+    res.status(401).json({ error: 'Invalid or expired token', code: 'AUTH_INVALID' });
+    return;
+  }
+  const { data: store } = await supabase
+    .from('stores')
+    .select('id, owner_name, store_name, phone, upi_vpa')
+    .eq('user_id', user.id)
+    .single();
+  res.json(store ?? null);
+});
+
+/**
+ * PATCH /api/auth/store
+ * Updates editable store fields (owner_name, store_name, phone, upi_vpa).
+ */
+router.patch('/auth/store', async (req: Request, res: Response) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Missing token', code: 'AUTH_MISSING' });
+    return;
+  }
+  const token = authHeader.replace('Bearer ', '');
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) {
+    res.status(401).json({ error: 'Invalid or expired token', code: 'AUTH_INVALID' });
+    return;
+  }
+  const result = updateStoreSchema.safeParse(req.body);
+  if (!result.success) {
+    res.status(400).json({ error: 'Validation failed', details: result.error.flatten((i) => i.message) });
+    return;
+  }
+  const { error: updateError } = await supabase
+    .from('stores')
+    .update(result.data)
+    .eq('user_id', user.id);
+  if (updateError) {
+    logger.error({ updateError }, 'Store update failed');
+    res.status(500).json({ error: 'Failed to update store', code: 'STORE_UPDATE_FAILED' });
+    return;
+  }
+  res.json({ success: true });
 });
 
 export default router;

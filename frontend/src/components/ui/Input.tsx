@@ -35,7 +35,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
               'w-full h-[54px] rounded-[14px] text-[17px] text-[#1C1C1E] placeholder-[#AEAEB2] tracking-[-0.43px]',
               'transition-all duration-[150ms]',
               'outline-none',
-              leftIcon ? 'pl-[46px] pr-4' : 'px-4',
+              leftIcon ? 'pl-[50px] pr-5' : 'px-5',
               error
                 ? 'ring-2 ring-[#E53935]'
                 : 'focus:ring-2 focus:ring-[#002970] focus:bg-white',
