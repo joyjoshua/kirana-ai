@@ -284,7 +284,7 @@ export default function OnboardingPage() {
         <div className="flex items-center justify-center gap-3 mb-8">
           <StepDot num={1} status={step === 'store' ? 'active' : 'done'} label="Store" />
           <div className="flex-1 h-[2px] max-w-[60px] rounded-full" style={{ backgroundColor: step !== 'store' ? '#00C48C' : '#E5E7EB' }} />
-          <StepDot num={2} status={step === 'inventory' ? 'active' : step === 'done' ? 'done' : 'future'} label="Inventory" />
+          <StepDot num={2} status={step === 'inventory' ? 'active' : step !== 'store' ? 'done' : 'future'} label="Inventory" />
           <div className="flex-1 h-[2px] max-w-[60px] rounded-full bg-[#E5E7EB]" />
           <StepDot num={3} status="future" label="Done" />
         </div>

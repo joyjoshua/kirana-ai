@@ -47,7 +47,7 @@ function SummaryBar({ sales }: { sales: SaleHistory[] }) {
       className="rounded-[20px] overflow-hidden"
       style={{ backgroundColor: '#002970', boxShadow: '0 4px 16px rgba(0,41,112,0.24)' }}
     >
-      <div className="flex divide-x" style={{ divideColor: 'rgba(255,255,255,0.12)' }}>
+      <div className="flex"  style={{ gap: 0 }}>
         <div className="flex-1 flex flex-col items-center justify-center gap-[2px] py-5">
           <span className="text-[11px] font-semibold uppercase tracking-[0.5px] text-white/60">Today</span>
           <span className="text-[22px] font-bold text-white tracking-[-0.5px]">
