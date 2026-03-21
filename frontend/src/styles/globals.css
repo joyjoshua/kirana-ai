@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* === BRAND === */
+  --color-primary: #002970;
+  --color-primary-light: #4A6FA5;
+  --color-primary-tint: #EEF3FA;
+  --color-upi: #00BAF2;
+
+  /* === SEMANTIC === */
+  --color-success: #00A86B;
+  --color-success-light: #E6F6F1;
+  --color-warning: #F5A623;
+  --color-warning-light: #FEF5E7;
+  --color-error: #E53935;
+  --color-error-light: #FDECEC;
+
+  /* === NEUTRALS === */
+  --color-bg-primary: #F2F2F7;
+  --color-surface: #FFFFFF;
+  --color-label-primary: #1C1C1E;
+  --color-label-secondary: #8E8E93;
+  --color-label-tertiary: #C7C7CC;
+  --color-label-disabled: #AEAEB2;
+  --color-separator: #C6C6C8;
+
+  /* === RADIUS === */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-pill: 9999px;
+
+  /* === FONT === */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* === SHADOWS === */
+  --shadow-1: 0 1px 3px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.10);
+  --shadow-3: 0 4px 12px rgba(0,0,0,0.08), 0 20px 48px rgba(0,0,0,0.14);
+  --shadow-4: 0 8px 20px rgba(0,0,0,0.12), 0 32px 64px rgba(0,0,0,0.18);
+
+  /* === MOTION === */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0.0, 0.0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0.0, 1, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* === LAYOUT === */
+  --max-width: 480px;
+  --nav-height: 56px;
+  --tab-height: 49px;
+  --mic-size: 72px;
+  --page-margin: 16px;
+}
+
+:root {
+  --fill-primary: rgba(120, 120, 128, 0.20);
+  --fill-secondary: rgba(120, 120, 128, 0.16);
+  --fill-tertiary: rgba(120, 120, 128, 0.12);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'cv05' on; /* Inter's disambiguation feature */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: #F2F2F7;
+  color: #1C1C1E;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid #002970;
+  outline-offset: 2px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 0;
+}
+
+/* Animations */
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes spin-arc {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.8); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes check-draw {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes waveform-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 900ms ease-out infinite;
+}
+
+.animate-spin-arc {
+  animation: spin-arc 900ms linear infinite;
+}
+
+.animate-skeleton {
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 400ms cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

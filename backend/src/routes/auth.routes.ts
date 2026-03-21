@@ -154,6 +154,35 @@ router.post('/auth/login', async (req: Request, res: Response) => {
 });
 
 /**
+ * GET /api/auth/store
+ * Returns the store_id for the authenticated user, or null if not onboarded.
+ *
+ * Headers: Authorization: Bearer <access_token>
+ */
+router.get('/auth/store', async (req: Request, res: Response) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader?.startsWith('Bearer ')) {
+    res.status(401).json({ error: 'Missing token', code: 'AUTH_MISSING' });
+    return;
+  }
+
+  const token = authHeader.replace('Bearer ', '');
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) {
+    res.status(401).json({ error: 'Invalid or expired token', code: 'AUTH_INVALID' });
+    return;
+  }
+
+  const { data: store } = await supabase
+    .from('stores')
+    .select('id')
+    .eq('user_id', user.id)
+    .single();
+
+  res.json({ store_id: store?.id ?? null });
+});
+
+/**
  * POST /api/auth/store
  * Creates the store record for an authenticated user.
  * Call once after registration to complete onboarding.
