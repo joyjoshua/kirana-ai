@@ -273,6 +273,12 @@ export default function LoginPage() {
             {mode === 'login' ? 'Sign up' : 'Log in'}
           </button>
         </div>
+
+        {/* Demo credentials */}
+        <div style={{ marginTop: '16px', padding: '12px 16px', borderRadius: '12px', backgroundColor: 'rgba(0,41,112,0.06)', textAlign: 'center' }}>
+          <p style={{ fontSize: '12px', fontWeight: 600, color: '#002970', margin: '0 0 4px', letterSpacing: '0.2px', textTransform: 'uppercase' }}>Demo Account</p>
+          <p style={{ fontSize: '13px', color: '#8E8E93', margin: 0 }}>user@kiranaai.com · testkai</p>
+        </div>
       </div>
 
       {/* Footer */}
