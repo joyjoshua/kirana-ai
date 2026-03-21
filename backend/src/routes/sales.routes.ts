@@ -1,8 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { validate } from '../middleware/validate';
-import { parseSaleSchema, commitSaleSchema, confirmPaymentSchema } from '../schemas/sale.schema';
+import { parseSaleSchema, commitSaleSchema, confirmPaymentSchema, salesHistorySchema } from '../schemas/sale.schema';
 import { parseSaleTranscript } from '../services/sale-parser.service';
-import { commitSaleAndUpdateStock, confirmPayment } from '../services/inventory.service';
+import { commitSaleAndUpdateStock, confirmPayment, getSalesHistory } from '../services/inventory.service';
 
 const router = Router();
 
@@ -74,6 +74,28 @@ router.patch(
       const result = await confirmPayment(saleId, req.storeId!);
 
       res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+/**
+ * GET /api/sales/:storeId
+ * Returns sales history with items for a store, newest first.
+ */
+router.get(
+  '/sales/:storeId',
+  validate(salesHistorySchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { storeId } = req.params as { storeId: string };
+      if (storeId !== req.storeId) {
+        res.status(403).json({ error: 'Access denied', code: 'AUTH_FORBIDDEN' });
+        return;
+      }
+      const sales = await getSalesHistory(storeId);
+      res.json({ sales });
     } catch (err) {
       next(err);
     }

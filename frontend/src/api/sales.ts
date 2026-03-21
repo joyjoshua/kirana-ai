@@ -1,5 +1,5 @@
 import api from './client';
-import type { ParseSaleResponse, CommitSaleResponse, CommittedSaleItem } from '../types/sale';
+import type { ParseSaleResponse, CommitSaleResponse, CommittedSaleItem, SaleHistory } from '../types/sale';
 
 export async function parseSale(transcript: string, storeId: string): Promise<ParseSaleResponse> {
   const { data } = await api.post<ParseSaleResponse>('/api/parse-sale', {
@@ -25,4 +25,9 @@ export async function confirmPayment(saleId: string): Promise<{ id: string; paym
     `/api/sales/${saleId}/confirm-payment`
   );
   return data;
+}
+
+export async function getSalesHistory(storeId: string): Promise<SaleHistory[]> {
+  const { data } = await api.get<{ sales: SaleHistory[] }>(`/api/sales/${storeId}`);
+  return data.sales;
 }

@@ -58,7 +58,7 @@ export default function HomePage() {
         }
       })();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state]);
 
   // --- Commit sale after USER_CONFIRMED ---
@@ -183,7 +183,7 @@ export default function HomePage() {
                 >
                   {[
                     { step: 1, text: 'Tap the mic button below' },
-                    { step: 2, text: 'Say your items — e.g., "ek kg Tata Salt, teen Maggi packet"' },
+                    { step: 2, text: 'Say your items — e.g., "ondu kg Tata Salt, eradu Maggi packet"' },
                     { step: 3, text: 'Tap the stop button when done' },
                   ].map(({ step, text }) => (
                     <div key={step} className="flex items-start gap-3">
@@ -238,7 +238,7 @@ export default function HomePage() {
                       <StockAlert
                         key={r.skuId}
                         item={stockItem}
-                        onReorder={() => {}}
+                        onReorder={() => { }}
                         loading={true}
                       />
                     );

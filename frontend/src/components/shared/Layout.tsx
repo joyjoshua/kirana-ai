@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Home, Mic, Package, Settings, ChevronLeft } from 'lucide-react';
+import { Home, ShoppingBag, Package, Settings, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LayoutProps {
@@ -16,6 +16,7 @@ const CONTENT_MAX_WIDTH = 520;
 const tabs = [
   { path: '/', icon: Home, label: 'Home' },
   { path: '/inventory', icon: Package, label: 'Stock' },
+  { path: '/sales', icon: ShoppingBag, label: 'Sales' },
   { path: '/settings', icon: Settings, label: 'Settings' },
 ] as const;
 
@@ -113,10 +114,6 @@ export function Layout({ children, title = 'KiranaAI', showBack = false, rightAc
                 </button>
               );
             })}
-            {/* Voice FAB placeholder slot */}
-            <div className="flex-1 flex items-center justify-center">
-              <Mic size={22} strokeWidth={1.75} color="#C7C7CC" />
-            </div>
           </div>
         </nav>
       )}

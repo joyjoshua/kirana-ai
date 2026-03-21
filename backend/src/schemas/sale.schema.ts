@@ -39,6 +39,16 @@ export const confirmPaymentSchema = z.object({
   }),
 });
 
+/**
+ * Schema for GET /api/sales/:storeId
+ */
+export const salesHistorySchema = z.object({
+  params: z.object({
+    storeId: z.string().uuid('Invalid store ID format'),
+  }),
+});
+
 export type ParseSaleInput = z.infer<typeof parseSaleSchema>;
 export type CommitSaleInput = z.infer<typeof commitSaleSchema>;
 export type ConfirmPaymentInput = z.infer<typeof confirmPaymentSchema>;
+export type SalesHistoryInput = z.infer<typeof salesHistorySchema>;

@@ -88,6 +88,78 @@ export async function confirmPayment(saleId: string, storeId: string) {
   return data;
 }
 
+// ─── Sales History ──────────────────────────────────────────────────
+
+export interface SaleHistoryItem {
+  sku_id: string;
+  qty: number;
+  unit_price: number;
+  subtotal: number;
+  name: string;
+  unit: string;
+}
+
+export interface SaleHistory {
+  id: string;
+  store_id: string;
+  total_amount: number;
+  payment_method: string;
+  payment_status: 'pending' | 'paid' | 'failed';
+  created_at: string;
+  items: SaleHistoryItem[];
+}
+
+export async function getSalesHistory(storeId: string): Promise<SaleHistory[]> {
+  const { data, error } = await supabase
+    .from('sales')
+    .select(`
+      id,
+      store_id,
+      total_amount,
+      payment_method,
+      payment_status,
+      created_at,
+      sale_items (
+        sku_id,
+        qty,
+        unit_price,
+        subtotal,
+        inventory:sku_id ( name, unit )
+      )
+    `)
+    .eq('store_id', storeId)
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (error) {
+    logger.error({ error, storeId }, 'Failed to fetch sales history');
+    throw error;
+  }
+
+  return (data || []).map((sale) => ({
+    id: sale.id,
+    store_id: sale.store_id,
+    total_amount: sale.total_amount,
+    payment_method: sale.payment_method,
+    payment_status: sale.payment_status as 'pending' | 'paid' | 'failed',
+    created_at: sale.created_at,
+    items: ((sale.sale_items as unknown as Array<{
+      sku_id: string;
+      qty: number;
+      unit_price: number;
+      subtotal: number;
+      inventory: { name: string; unit: string } | null;
+    }>) || []).map((si) => ({
+      sku_id: si.sku_id,
+      qty: si.qty,
+      unit_price: si.unit_price,
+      subtotal: si.subtotal,
+      name: si.inventory?.name ?? 'Unknown item',
+      unit: si.inventory?.unit ?? 'pcs',
+    })),
+  }));
+}
+
 // ─── Inventory CRUD ─────────────────────────────────────────────────
 
 /**

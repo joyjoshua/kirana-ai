@@ -10,6 +10,7 @@ const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const OnboardingPage = lazy(() => import('@/pages/OnboardingPage'));
 const HomePage = lazy(() => import('@/pages/HomePage'));
 const InventoryPage = lazy(() => import('@/pages/InventoryPage'));
+const SalesPage = lazy(() => import('@/pages/SalesPage'));
 const SettingsPage = lazy(() => import('@/pages/SettingsPage'));
 
 function PageFallback() {
@@ -93,6 +94,16 @@ export default function App() {
                 <RequireAuth>
                   <RequireStore>
                     <InventoryPage />
+                  </RequireStore>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/sales"
+              element={
+                <RequireAuth>
+                  <RequireStore>
+                    <SalesPage />
                   </RequireStore>
                 </RequireAuth>
               }
